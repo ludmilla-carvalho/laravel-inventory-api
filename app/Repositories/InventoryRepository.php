@@ -16,4 +16,11 @@ class InventoryRepository extends BaseRepository implements InventoryRepositoryI
     {
         return Inventory::query()->where('product_id', $productId)->first();
     }
+
+    public function deleteOlderThan(\DateTimeInterface $date): int
+    {
+        return Inventory::query()
+            ->where('last_updated', '<', $date)
+            ->delete();
+    }
 }

@@ -6,6 +6,9 @@ use App\Models\Sale;
 use App\Repositories\Contracts\SaleRepositoryInterface;
 use Illuminate\Support\Collection;
 
+/**
+ * @extends BaseRepository<Sale>
+ */
 class SaleRepository extends BaseRepository implements SaleRepositoryInterface
 {
     public function __construct(Sale $model)
@@ -13,6 +16,7 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
         parent::__construct($model);
     }
 
+    /** @return Collection<int, Sale> */
     public function findByPeriod(string $startDate, string $endDate): Collection
     {
         return Sale::query()
