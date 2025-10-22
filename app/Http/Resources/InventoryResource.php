@@ -26,8 +26,8 @@ class InventoryResource extends JsonResource
             'quantity' => $this->quantity,
             'cost_price' => $this->cost_price,
             'sale_price' => $this->sale_price,
-            'total_cost'      => $this->total_cost,
-            'projected_profit'=> $this->projected_profit,
+            'total_cost' => $this->total_cost,
+            'projected_profit' => $this->projected_profit,
             'last_updated' => $this->last_updated
                 ? \Carbon\Carbon::parse($this->last_updated)->format('Y-m-d H:i:s')
                 : null,
