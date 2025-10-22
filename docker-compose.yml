@@ -84,6 +84,35 @@ services:
       - db
     networks:
       - appnet
+  
+  scheduler:
+    build: .
+    container_name: inventory_scheduler
+    command: >
+      sh -c "sleep 20 && while true; do
+        php artisan schedule:run --verbose --no-interaction;
+        sleep 60;
+      done"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - app
+      - db
+      - redis
+    networks:
+      - appnet
+
+  worker:
+    build: .
+    container_name: inventory_worker
+    command: php artisan queue:work redis --queue=sales --sleep=1 --tries=3 --timeout=30
+    depends_on:
+      - redis
+      - db
+    networks:
+      - appnet
+    volumes:
+      - .:/var/www/html
 
 volumes:
   db_data:

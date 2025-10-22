@@ -16,7 +16,7 @@ class AddInventoryRequest extends FormRequest
         return [
             'sku' => 'required|string|exists:products,sku',
             'quantity' => 'required|integer|min:1',
-            // 'cost_price' => 'required|numeric|min:0',
+            'cost_price' => 'required|numeric|min:0',
         ];
     }
 }

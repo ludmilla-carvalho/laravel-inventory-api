@@ -29,7 +29,8 @@ class InventoryController extends Controller
     {
         $this->inventoryService->addStock(
             $request->sku,
-            $request->quantity
+            $request->quantity,
+            $request->cost_price
         );
 
         return $this->success(null, 'Estoque atualizado com sucesso', Response::HTTP_CREATED);
