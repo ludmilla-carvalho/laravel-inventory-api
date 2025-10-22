@@ -14,9 +14,9 @@ class InventoryService
         private ProductRepositoryInterface $productRepository
     ) {}
 
-    public function addStock(string $sku, int $quantity, float $costPrice): void
+    public function addStock(string $sku, int $quantity): void
     {
-        DB::transaction(function () use ($sku, $quantity, $costPrice) {
+        DB::transaction(function () use ($sku, $quantity) {
             $product = $this->productRepository->findBySku($sku);
 
             if (! $product) {
@@ -37,28 +37,27 @@ class InventoryService
                 ]);
             }
 
-            // Atualiza custo do produto
-            $product->cost_price = $costPrice;
-            $product->save();
-
-            // Invalida cache do estoque
-            Cache::forget('inventory:summary');
+            // Invalida cache do estoque (usar explicitamente redis)
+            Cache::store('redis')->forget('inventory:summary');
         });
     }
 
     public function getInventorySummary()
     {
-        return Cache::remember('inventory:summary', 60, function () {
-            return DB::table('inventory')
-                ->join('products', 'inventory.product_id', '=', 'products.id')
+        // TODO: Implementar paginação se necessário
+        // TODO: Criar um config para o tempo de cache
+        // Cache for 60 minutes (usar explicitamente redis)
+        return Cache::store('redis')->remember('inventory:summary', now()->addMinutes(60), function () {
+            return DB::table('inventories')
+                ->join('products', 'inventories.product_id', '=', 'products.id')
                 ->select(
                     'products.sku',
                     'products.name',
-                    'inventory.quantity',
+                    'products.description',
                     'products.cost_price',
                     'products.sale_price',
-                    DB::raw('(inventory.quantity * products.cost_price) as total_cost'),
-                    DB::raw('(inventory.quantity * (products.sale_price - products.cost_price)) as projected_profit')
+                    'inventories.quantity',
+                    'inventories.last_updated'
                 )
                 ->get();
         });
@@ -69,7 +68,7 @@ class InventoryService
         $deleted = $this->inventoryRepository->deleteOlderThan(now()->subDays(90));
 
         if ($deleted > 0) {
-            Cache::forget('inventory:summary');
+            Cache::store('redis')->forget('inventory:summary');
         }
 
         return $deleted;
