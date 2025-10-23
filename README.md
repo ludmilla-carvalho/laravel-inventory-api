@@ -1,61 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Laravel Inventory & Sales API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API REST desenvolvida com **Laravel 12+** e **PHP 8.4**, seguindo as melhores práticas de escalabilidade, performance e concorrência.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🧱 Tecnologias Utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **PHP 8.4** (via Docker)
+- **Laravel 12+**
+- **MySQL 8.0**
+- **Redis** (cache e filas)
+- **PHPStan + Larastan** (lint estático)
+- **PHPUnit** (testes unitários)
+- **Supervisor / Queue Worker**
+- **Scheduler (tarefas agendadas)**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ⚙️ Instalação e Execução
+Foi criado um arquivo `Makefile` para facilitar a execução de comandos na fase de desenvolvimento.
+Abra o arquivo `Makefile` na raiz do projeto e veja os camandos disponíveis
+### 1️⃣ Clonar o projeto
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/ludmilla-carvalho/laravel-inventory-api
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+cd laravel-inventory-api
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2️⃣ Subir containers
 
-## Laravel Sponsors
+```bash
+make up
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3️⃣ Instalar dependências
 
-### Premium Partners
+```bash
+make install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 4️⃣ Configurar o .env
+Copie o arquivo `.env.example` e ajuste se necessário:
+```bash
+cp .env.example .env
+make bash
+php artisan key:generate
+exit
+```
 
-## Contributing
+### 5️⃣ Executar migrações e seeders
+Seeders criados:
+- RecentInventorySeeder - com o campo last_updated entre 1 e 30 dias
+- OldInventorySeeder - com o campo last_updated de 120 dias
+```bash
+make migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6️⃣ Rodar servidor
+O sistema estará acessível em http://localhost
 
-## Code of Conduct
+O PHPMyAdmin está acessível em http://localhost:8080  
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🖌 Testes e Qualidade
 
-## Security Vulnerabilities
+### Rodar testes unitários
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+make test
+```
 
-## License
+### Formatação de Código - Laravel Pint
+O projeto utiliza **Laravel Pint** para padronizar o código PHP.
+```bash
+make format
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Rodar análise estática (PHPStan)
+
+```bash
+make lint
+```
+
+### Pré-commit Hook
+Um hook Git foi configurado para rodar Pint e o PHPStan automaticamente antes de cada commit. Este hoock está localizado na pasta `extras` e deve ser copiado para a pasta `.git/hooks`
+```bash
+cp .extras/pre-commit .git/hooks/pre-commit
+```
+- Certifique-se que `.git/hooks/pre-commit` existe e é executável:
+```bash
+chmod +x .git/hooks/pre-commit
+```
+ - Ao tentar commitar código PHP:
+   - Se houver problemas de formatação, o commit será bloqueado e será necessário corrigir.
+   - Se tudo estiver correto, o commit será realizado normalmente.
+
+
+## 🧵 Fila e Concorrência
+O processamento de vendas é assíncrono via Redis Queue através do `Job` `ProcessSaleJob`.
+- Job executa com transações e locks (`lockForUpdate()`) para evitar concorrência simultânea.
+- Cache do estoque é invalidado (`Cache::forget`) após atualização.
+
+## ⏰ Tarefas Agendadas (Scheduler)
+O container scheduler executa o comando `php artisan schedule:run` a cada minuto.
+
+A limpeza automática de registros de estoque antigos (não atualizados há 90 dias) é agendada diariamente no `App\Console\Kernel`.
+
+Também é possível realizar esta limpeza pelo artisan
+Logs:
+```bash
+ php artisan inventory:clean
+```
+**Na seed há registros com mais de 90 dias para fins de teste**
+
+
+## ⚡ Estratégias de Otimização Implementadas
+- **Cache de consultas de estoque** com Redis (`GET /api/inventory`)
+- **Transações com** `lockForUpdate(`) para garantir integridade de estoque
+- **Filas assíncronas** para atualização de estoque e processamento de vendas
+- **Jobs e Events** desacoplados
+- **Tarefas agendadas** com `schedule:run` em container dedicado
+- **Lint** + **Testes integrados** (PHPStan + PHPUnit)
+
+## 📂 Estrutura dos Endpoints
+| Método   | Endpoint             | Descrição                          |
+| :------- | :------------------- | :--------------------------------- |
+| **POST** | `/api/inventory`     | Registrar entrada de produtos      |
+| **GET**  | `/api/inventory`     | Consultar estoque atual (cacheado) |
+| **POST** | `/api/sales`         | Registrar venda (assíncrona)       |
+| **GET**  | `/api/sales/{id}`    | Detalhar venda                     |
+| **GET**  | `/api/reports/sales` | Relatório de vendas filtrado       |
+
+## 🧑‍💻 Desenvolvimento
+Acesse o container para rodar comandos artisan:
+```bash
+make bash
+php artisan route:list
+php artisan tinker
+exit
+```
+
+## 📦 Deploy e Produção
+Para produção:
+
+- Configure `.env` com `APP_ENV=production` e `APP_DEBUG=false`.
+- Ajuste volumes e persistência no `docker-compose.prod.yml`.
+- Configure Redis externo e banco de dados gerenciado, se aplicável.
