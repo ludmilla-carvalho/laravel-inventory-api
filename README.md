@@ -50,9 +50,7 @@ exit
 ```
 
 ### 5️⃣ Executar migrações e seeders
-Seeders criados:
-- RecentInventorySeeder - com o campo last_updated entre 1 e 30 dias
-- OldInventorySeeder - com o campo last_updated de 120 dias
+Seeder criado: ProductSeeder - cria uma carga inicial de produtos com o estoque
 ```bash
 make migrate
 ```
@@ -142,10 +140,3 @@ php artisan route:list
 php artisan tinker
 exit
 ```
-
-## 📦 Deploy e Produção
-Para produção:
-
-- Configure `.env` com `APP_ENV=production` e `APP_DEBUG=false`.
-- Ajuste volumes e persistência no `docker-compose.prod.yml`.
-- Configure Redis externo e banco de dados gerenciado, se aplicável.
