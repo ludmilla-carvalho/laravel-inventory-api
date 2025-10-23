@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSaleRequest;
 use App\Http\Resources\SaleResource;
 use App\Http\Traits\ApiResponse;
 use App\Services\SalesService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class SalesController extends Controller
@@ -14,18 +15,15 @@ class SalesController extends Controller
 
     public function __construct(private SalesService $salesService) {}
 
-    public function store(CreateSaleRequest $request)
+    public function store(CreateSaleRequest $request): JsonResponse
     {
+        $request->validated();
         $sale = $this->salesService->createSale($request->items);
 
-        return $this->success(
-            new SaleResource($sale->load('items.product')),
-            'Venda registrada com sucesso',
-            Response::HTTP_CREATED
-        );
+        return response()->json($sale, Response::HTTP_CREATED);
     }
 
-    public function show(int $id)
+    public function show(int $id): SaleResource|JsonResponse
     {
         $sale = $this->salesService->getSaleDetails($id);
 
@@ -33,6 +31,6 @@ class SalesController extends Controller
             return $this->notFound('Venda não encontrada');
         }
 
-        return $this->success(new SaleResource($sale->load('items.product')));
+        return new SaleResource($sale->load('items.product'));
     }
 }

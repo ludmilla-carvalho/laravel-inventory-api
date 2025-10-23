@@ -41,7 +41,6 @@ class InventoryService
             $product->cost_price = $costPrice;
             $product->save();
 
-            // Invalida cache do estoque (usar explicitamente redis)
             Cache::forget('inventory:summary');
         });
     }

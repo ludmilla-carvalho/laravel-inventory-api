@@ -16,4 +16,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return Product::query()->where('sku', $sku)->first();
     }
+
+    public function findById(int $id): ?Product
+    {
+        return Product::find($id);
+    }
 }

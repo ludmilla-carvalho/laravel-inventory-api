@@ -23,4 +23,22 @@ class InventoryRepository extends BaseRepository implements InventoryRepositoryI
             ->where('last_updated', '<', $date)
             ->delete();
     }
+
+    public function lockForUpdate(int $product_id): ?Inventory
+    {
+        return Inventory::where('product_id', $product_id)->lockForUpdate()->first();
+    }
+
+    public function decrementStock(int $id, int $quantity): bool
+    {
+        $inventory = $this->lockForUpdate($id);
+
+        if (! $inventory || $inventory->quantity < $quantity) {
+            return false;
+        }
+
+        $inventory->quantity -= $quantity;
+
+        return $inventory->save();
+    }
 }

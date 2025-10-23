@@ -36,6 +36,9 @@ lint:
 format:
 	$(PINT) --dirty
 
+format-test:
+	$(PINT) --test
+
 queue:
 	docker compose logs -f worker
 

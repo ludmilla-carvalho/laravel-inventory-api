@@ -23,4 +23,20 @@ class SaleRepository extends BaseRepository implements SaleRepositoryInterface
             ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
     }
+
+    public function findById(int $id): ?Sale
+    {
+        return Sale::find($id);
+    }
+
+    public function findByIdWithItems(int $id): ?Sale
+    {
+        return Sale::with('items.product')->find($id);
+    }
+
+    // todo: verificar se é usado
+    // public function lockForUpdate(int $id): ?Sale
+    // {
+    //     return Sale::where('id', $id)->lockForUpdate()->first();
+    // }
 }
