@@ -87,7 +87,7 @@ class SalesService
             foreach ($sale->items as $item) {
                 $inventory = $this->inventoryRepository->lockForUpdate($item->product_id);
                 if (! $inventory || $inventory->quantity < $item->quantity) {
-                    throw new \RuntimeException("Estoque insuficiente para o produto {$item->product_id}");
+                    throw new \App\Exceptions\InsufficientInventoryException($item->product_id);
                 }
 
                 // baixa de estoque via repositório

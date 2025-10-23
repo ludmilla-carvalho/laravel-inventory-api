@@ -16,10 +16,13 @@ class SalesController extends Controller
 
     public function store(CreateSaleRequest $request): SaleResource|JsonResponse
     {
-        $request->validated();
         $sale = $this->salesService->createSale($request->items);
 
-        return new SaleResource($sale->load('items.product'));
+        return $this->success(
+            new SaleResource($sale->load('items.product')),
+            'Venda criada com sucesso',
+            201
+        );
     }
 
     public function show(int $id): SaleResource|JsonResponse

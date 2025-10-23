@@ -33,6 +33,7 @@ class InventoryService
                 $this->inventoryRepository->create([
                     'product_id' => $product->id,
                     'quantity' => $quantity,
+                    'cost_price' => $costPrice,
                     'last_updated' => now(),
                 ]);
             }
@@ -53,6 +54,7 @@ class InventoryService
             return DB::table('inventories')
                 ->join('products', 'inventories.product_id', '=', 'products.id')
                 ->whereNull('inventories.deleted_at')
+                ->whereNull('products.deleted_at')
                 ->select(
                     'products.sku',
                     'products.name',
