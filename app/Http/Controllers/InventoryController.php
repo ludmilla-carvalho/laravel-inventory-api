@@ -35,12 +35,4 @@ class InventoryController extends Controller
 
         return $this->success(null, 'Estoque atualizado com sucesso', Response::HTTP_CREATED);
     }
-
-    // TODO: verificar
-    // public function clean(): JsonResponse
-    // {
-    //     $deleted = $this->inventoryService->cleanOldInventory();
-
-    //     return $this->success(['deleted' => $deleted], 'Itens antigos removidos');
-    // }
 }

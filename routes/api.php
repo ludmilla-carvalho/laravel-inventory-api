@@ -12,7 +12,6 @@ Route::get('/ping', function () {
 Route::prefix('inventory')->group(function () {
     Route::get('/', [InventoryController::class, 'index']);
     Route::post('/', [InventoryController::class, 'store']);
-    // Route::delete('/clean', [InventoryController::class, 'clean']); TODO: verificar
 });
 
 Route::prefix('sales')->group(function () {

@@ -18,8 +18,8 @@ class SaleItemResource extends JsonResource
             'sku' => $this->product->sku,
             'name' => $this->product->name,
             'quantity' => $this->quantity,
-            'unit_price' => $this->unit_price,
-            'total' => $this->quantity * $this->unit_price,
+            'unit_price' => sprintf('%.2f', $this->unit_price),
+            'total' => sprintf('%.2f', $this->quantity * $this->unit_price),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\SaleStatus;
 use Illuminate\Support\Facades\DB;
 
 class ReportService
@@ -21,9 +22,9 @@ class ReportService
                 DB::raw('SUM(sale_items.quantity) as total_quantity'),
                 DB::raw('SUM(sale_items.quantity * sale_items.unit_price) as total_sales'),
                 DB::raw('SUM(sale_items.quantity * sale_items.unit_cost) as total_cost'),
-                DB::raw('SUM((sale_items.quantity * sale_items.unit_price) - (sale_items.quantity * sale_items.unit_cost)) as total_profit')
+                DB::raw('SUM((sale_items.quantity * sale_items.unit_price) - (sale_items.quantity * sale_items.unit_cost)) as total_profit'),
             )
-            ->groupBy('products.sku', 'products.name');
+            ->groupBy('products.sku');
 
         if ($startDate && $endDate) {
             $query->whereBetween('sales.created_at', [$startDate, $endDate]);
@@ -32,6 +33,8 @@ class ReportService
         if ($productSku) {
             $query->where('products.sku', $productSku);
         }
+
+        $query->where('sales.status', SaleStatus::Completed);
 
         return $query->get();
     }

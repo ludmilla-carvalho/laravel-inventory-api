@@ -20,7 +20,6 @@ class CleanOldInventoryJob implements ShouldQueue
     {
         $deleted = $inventoryService->cleanOldInventory();
 
-        // Opcional: logar a execução
         Log::info("CleanOldInventoryJob executado. Registros removidos: {$deleted}");
     }
 }

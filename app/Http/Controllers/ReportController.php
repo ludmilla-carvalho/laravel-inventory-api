@@ -16,6 +16,8 @@ class ReportController extends Controller
 
     public function sales(SalesReportRequest $request)
     {
+        $request->validated();
+
         $report = $this->reportService->salesReport(
             $request->start_date,
             $request->end_date,

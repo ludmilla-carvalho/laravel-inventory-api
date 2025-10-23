@@ -19,11 +19,11 @@ class SaleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'total_amount' => $this->total_amount,
-            'total_cost' => $this->total_cost,
-            'total_profit' => $this->total_profit,
+            'total_amount' => sprintf('%.2f', $this->total_amount),
+            'total_cost' => sprintf('%.2f', $this->total_cost),
+            'total_profit' => sprintf('%.2f', $this->total_profit),
             'status' => $this->status instanceof SaleStatus
-                                ? $this->status->value
+                                ? $this->status->name
                                 : $this->status,
             'created_at' => $this->created_at?->toDateTimeString(),
             'items' => SaleItemResource::collection($this->whenLoaded('items')),
