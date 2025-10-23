@@ -1,120 +1,184 @@
 {
-  "info": {
-    "name": "ERP API",
-    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
-    "description": "Coleção de endpoints da API ERP (Inventory, Sales, Reports)",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Inventory",
-      "item": [
-        {
-          "name": "Listar Estoque",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/inventory",
-              "host": ["{{base_url}}"],
-              "path": ["api", "inventory"]
-            }
-          }
-        },
-        {
-          "name": "Adicionar Estoque",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"sku\": \"PROD001\",\n  \"quantity\": 10,\n  \"cost_price\": 50.0\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/inventory",
-              "host": ["{{base_url}}"],
-              "path": ["api", "inventory"]
-            }
-          }
-        },
-        {
-          "name": "Limpar Estoque Antigo",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/inventory/clean",
-              "host": ["{{base_url}}"],
-              "path": ["api", "inventory", "clean"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Sales",
-      "item": [
-        {
-          "name": "Criar Venda",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"items\": [\n    { \"sku\": \"PROD001\", \"quantity\": 2 },\n    { \"sku\": \"PROD002\", \"quantity\": 1 }\n  ]\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/api/sales",
-              "host": ["{{base_url}}"],
-              "path": ["api", "sales"]
-            }
-          }
-        },
-        {
-          "name": "Detalhes da Venda",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/sales/1",
-              "host": ["{{base_url}}"],
-              "path": ["api", "sales", "1"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Reports",
-      "item": [
-        {
-          "name": "Relatório de Vendas",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/reports/sales?start_date=2025-01-01&end_date=2025-12-31&sku=PROD001",
-              "host": ["{{base_url}}"],
-              "path": ["api", "reports", "sales"],
-              "query": [
-                { "key": "start_date", "value": "2025-01-01" },
-                { "key": "end_date", "value": "2025-12-31" },
-                { "key": "sku", "value": "PROD001" }
-              ]
-            }
-          }
-        }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost"
-    }
-  ]
+	"info": {
+		"_postman_id": "a770e166-e5b0-44de-839c-36e6339ad748",
+		"name": "ERP API",
+		"description": "Coleção de endpoints da API ERP (Inventory, Sales, Reports)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1666152"
+	},
+	"item": [
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Listar Estoque",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/inventory",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar Estoque",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sku\": \"SKU-0001\",\n  \"quantity\": 1,\n  \"cost_price\": 9.63\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inventory",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inventory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sales",
+			"item": [
+				{
+					"name": "Criar Venda",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"items\": [\n    { \"sku\": \"SKU-0001\", \"quantity\": 2 },\n    { \"sku\": \"SKU-0002\", \"quantity\": 1 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sales",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhes da Venda",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sales/6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sales",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Relatório de Vendas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/reports/sales?start_date=2025-01-01&end_date=2025-12-31&sku=SKU-0001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"sales"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2025-01-01"
+								},
+								{
+									"key": "end_date",
+									"value": "2025-12-31"
+								},
+								{
+									"key": "sku",
+									"value": "SKU-0001"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost"
+		}
+	]
 }

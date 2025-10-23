@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Enums\SaleStatus;
 use App\Models\Product;
-use App\Models\Sale;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
