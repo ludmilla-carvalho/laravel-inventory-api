@@ -61,7 +61,6 @@ O sistema estará acessível em http://localhost
 O PHPMyAdmin está acessível em http://localhost:8080  
 
 Também há uma colection do postman disponível em localizado na pasta `.extras`, o arquivo é  `laravel-inventory-api.postman_collection.json`
-```bash
 
 ## 🖌 Testes e Qualidade
 
